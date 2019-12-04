@@ -1,0 +1,22 @@
+---
+- name: create and setup sec group rules
+  ec2_group:
+    state: present
+    name: '{{ secGroupName }}'
+    description: security group for acit4640 app (within BCIT network)
+    vpc_id: '{{ vpc_data.vpc.id }}'
+    region: '{{ availRegion }}'
+    rules: 
+      - proto: tcp
+        ports: 
+          - 22
+        cidr_ip: '{{ bcitIPRange }}'
+      - proto: tcp
+        ports: 
+          - 22
+        cidr_ip: '{{ secgroup_ssh_allowed_instructor_cidr }}'
+      - proto: tcp
+        ports: 
+          - 80
+        cidr_ip: 0.0.0.0/0
+  register: secGroup_data

@@ -1,0 +1,114 @@
+---
+- hosts: todoapp
+  tasks:
+    - name: Install nginx
+      become: yes
+      package:
+        name: nginx
+        state: installed
+
+    - name: Install jq
+      become: yes
+      package:
+        name: jq
+        state: installed
+
+    - name: Install nodejs npm
+      become: yes
+      package:
+        name: nodejs
+        state: installed
+
+    - name: Install mongodb-server
+      become: yes
+      package:
+        name: mongodb-server
+        state: installed
+
+    - name: Install git
+      become: yes
+      package:
+        name: git
+        state: installed
+
+    - name: add user
+      become: yes
+      user: name=todoapp password=todoapp
+
+    - name: Disable SELinux
+      become: yes
+      selinux: state=disabled
+    
+    - name: Make APP
+      become: yes
+      file: 
+        path: /home/todoapp/app 
+        state: directory
+        recurse: yes
+        owner: todoapp
+        group: todoapp 
+        mode: '0777'
+      sudo: yes
+
+    - name: downloading git
+      become: yes
+      git:
+        repo: 'https://github.com/timoguic/ACIT4640-todo-app.git'
+        dest: /home/todoapp/app
+      sudo: yes
+    
+    - name: database.js installation
+      template:
+        src: {{ database_file_path }}
+        dest: {{ database_app_path }}
+
+    - name: Change file permissions
+      become: yes
+      file: dest=/home/todoapp owner=todoapp group=todoapp mode="0777" recurse=yes
+
+    - name: Install packages based on package.json using the npm installed with nvm v0.10.1.
+      become: yes
+      npm:
+        path: /home/todoapp/app
+
+    - name: Enable http
+      become: yes
+      firewalld:
+        zone: public
+        immediate: yes
+        service: http
+        permanent: yes
+        state: enabled
+
+    - name: copy the "todoapp.service" file
+      become: yes
+      copy:
+        src: ../files/todoapp.service
+        dest: /lib/systemd/system/todoapp.service
+    
+    - name: copy the "nginx.conf" file
+      become: yes
+      copy:
+        src: ../files/nginx.conf
+        dest: /etc/nginx/nginx.conf
+
+    - name: enable nginx
+      become: yes
+      systemd:
+        name: todoapp
+        enabled: yes
+        state: started
+    
+    - name: enable and restart nginx
+      become: yes
+      systemd:
+        state: restarted
+        enabled: yes
+        name: nginx
+
+    - name: enable mongodb
+      become: yes
+      systemd:
+        name: mongod
+        enabled: yes
+        state: started

@@ -1,0 +1,12 @@
+---
+- name: Install nginx
+  become: yes
+  package:
+    name: nginx
+    state: installed
+
+- name: copy the "nginx.conf" file
+  become: yes
+  template:
+    src: "{{ nginx_file_path }}"
+    dest: "{{ nginx_app_path }}"

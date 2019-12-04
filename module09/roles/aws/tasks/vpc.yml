@@ -1,0 +1,9 @@
+---
+- name: provision the VPC
+  ec2_vpc_net:
+    state: present
+    cidr_block: '{{ vpcAddBlock }}'
+    region: '{{ availRegion }}'
+    multi_ok: no
+    name: '{{ vpcName }}'
+  register: vpc_data

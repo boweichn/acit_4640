@@ -1,0 +1,13 @@
+---
+- include_role:
+    name: no_selinux
+- include_role:
+    name: install_git
+- include_role:
+    name: mongo_server
+- include_role:
+    name: nginx
+  vars:
+    service_name: http
+- include_role:
+    name: nodejs

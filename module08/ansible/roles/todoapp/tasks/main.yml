@@ -1,0 +1,5 @@
+---
+- name: including all todoapp tasks
+  include_tasks: machine_prep.yml
+- name: including all todoapp tasks
+  include_tasks: enable_services.yml

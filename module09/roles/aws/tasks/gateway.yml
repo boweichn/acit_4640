@@ -1,0 +1,9 @@
+---
+- name: setting up internet gateway
+  ec2_vpc_igw:
+    state: present
+    vpc_id: '{{ vpc_data.vpc.id }}'
+    region: '{{ availRegion }}'
+    tags:
+      Name: '{{ gatewayName }}'
+  register: gateway_data

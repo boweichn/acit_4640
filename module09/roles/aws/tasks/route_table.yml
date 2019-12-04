@@ -1,0 +1,14 @@
+---
+- name: creating a route table
+  ec2_vpc_route_table:
+    state: present
+    vpc_id: '{{ vpc_data.vpc.id }}'
+    region: '{{ availRegion }}'
+    tags:
+      Name: '{{ rtblName }}'
+    subnets:
+      - '{{ subnet_data.subnet.id }}'
+    routes:
+      - dest: 0.0.0.0/0
+        gateway_id: '{{ gateway_data.gateway_id }}'
+  register: rtble_data

@@ -1,0 +1,21 @@
+---
+- name: create and setup the EC2 instance
+  ec2:
+    key_name: '{{ awsPem }}'
+    instance_type: '{{ ec2Type }}'
+    image: '{{ ec2AMI }}'
+    wait: yes
+    wait_timeout: 999
+    exact_count: 1
+    count_tag:
+        Name: '{{ ec2Name }}'
+    region: '{{ availRegion }}'
+    instance_tags:
+      Name: '{{ ec2Name }}'
+    volumes:
+      - device_name: /dev/sda1
+        volume_type: gp2
+        volume_size: '{{ ec2StorageSize }}'
+    vpc_subnet_id: '{{ subnet_data.subnet.id }}'
+    group_id: '{{ secGroup_data.group_id }}'
+  register: ec2_data

@@ -1,0 +1,88 @@
+---
+- ec2_instance_facts:
+    region: "{{ availRegion }}"
+    filters:
+      instance-state-name: 'running'
+  register: ec2_data
+
+- ec2_group_facts:
+    region: "{{ availRegion }}"
+    filters:
+      group-name: "{{ secGroupName }}"
+  register: sg_data
+
+- ec2_vpc_route_table_facts:
+    region: "{{ availRegion }}"
+    filters:
+      "tag:Name": "{{ rtblName }}"
+  register: rtbl_data
+
+- ec2_vpc_igw_facts:
+    region: "{{ availRegion }}"
+    filters:
+      "tag:Name": "{{ gatewayName }}"
+  register: gw_data
+
+- ec2_vpc_subnet_facts:
+    region: "{{ availRegion }}"
+    filters:
+      "tag:Name": "{{ subnetName }}"
+  register: subnet_data
+
+- ec2_vpc_net_facts:
+    region: "{{ availRegion }}"
+    filters:
+      "tag:Name": "{{ vpcName }}"
+  register: vpc_data
+
+- name: disassociate an elastic IP from an instance
+  ec2_eip:
+    region: "{{ availRegion }}"
+    device_id: '{{ ec2_data.instances[0].instance_id }}'
+    ip: '{{ ec2_data.instances[0].network_interfaces[0].association.public_ip }}'
+    release_on_disassociation: yes
+    state: absent
+
+- name: Terminate instances
+  ec2:
+    state: 'absent'
+    wait: yes
+    region: "{{ availRegion }}"
+    instance_ids: '{{ ec2_data.instances[0].instance_id }}'
+
+- name: Deleting Security Group
+  ec2_group:
+    region: "{{ availRegion }}"
+    group_id: "{{ sg_data.security_groups[0].group_id }}"
+    state: absent
+
+- name: delete route table
+  ec2_vpc_route_table:
+    vpc_id: "{{ vpc_data.vpcs[0].id }}"
+    region: "{{ availRegion }}"
+    route_table_id: "{{ rtbl_data.route_tables[0].id }}"
+    lookup: id
+    state: absent
+
+- name: Remove subnet
+  ec2_vpc_subnet:
+    state: absent
+    region: "{{ availRegion }}"
+    cidr: "{{ subnet_data.subnets[0].cidr_block }}"
+    vpc_id: "{{ vpc_data.vpcs[0].vpc_id }}"
+
+- name: Remove gateway
+  ec2_vpc_igw:
+    state: absent
+    region: "{{ availRegion }}"
+    vpc_id: "{{ vpc_data.vpcs[0].id }}"
+    tags:
+      name: "{{ gatewayName }}"
+
+- name: DELETE THE VPC
+  ec2_vpc_net:   
+    name: "{{ vpcName }}"  
+    cidr_block: "{{ vpc_data.vpcs[0].cidr_block }}" 
+    region: "{{ availRegion }}"
+    state: absent  
+    purge_cidrs: yes

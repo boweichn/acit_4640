@@ -1,0 +1,15 @@
+---
+app_user: todoapp
+app_password: todoapp
+app_user_home: '/home/todoapp'
+app_path: '/home/todoapp/app'
+app_repo: 'https://github.com/timoguic/ACIT4640-todo-app.git'
+http_port: 8080
+nginx_dir: '/home/todoapp/app/public'
+nginx_index: 'index.html'
+database_file_path: 'roles/todoapp/templates/database.j2'
+database_app_path: '/home/todoapp/app/config/database.js'
+mongo_hostname: localhost
+mongo_instance: acit4640
+todoservice_file_path: 'roles/todoapp/templates/todoapp_service.j2'
+todoservice_app_path: '/lib/systemd/system/todoapp.service'

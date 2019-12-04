@@ -1,0 +1,23 @@
+---
+iamGroup: 'ACIT4640_ADMIN'
+iamUser: '4640_tim.g'
+credCSV: 'credentials.csv'
+vpcName: 'ACIT4640_vpc'
+vpcAddBlock: '10.46.0.0/16'
+subnetName: 'ACIT4640_subnet'
+availRegion: 'us-west-2'
+availZone: 'us-west-2a'
+subnetAddBlock: '10.46.10.0/24'
+gatewayName: 'ACIT4640_gw'
+rtblName: 'ACIT4640_rtbl'
+gateWayDefault: '0.0.0.0/0'
+secGroupName: 'ACIT4640_SecGroup'
+secGroupSSHPort: 22
+bcitIPRange: '142.232.0.0/16'
+secGroupHttpPort: 80
+httpInboundIP: '0.0.0.0/0'
+ec2AMI: 'ami-01ed306a12b7d1c96'
+awsPem: 'aws_private_key'
+ec2Type: 't2.micro'
+ec2Name: 'ACIT4640_APP'
+ec2StorageSize: '8'

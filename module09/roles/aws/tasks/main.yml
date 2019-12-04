@@ -1,0 +1,17 @@
+---
+- name: creating VPC.
+  include_tasks: vpc.yml
+- name: creating subnet.
+  include_tasks: subnet.yml
+- name: creating gateway.
+  include_tasks: gateway.yml
+- name: creating route table.
+  include_tasks: route_table.yml
+- name: creating security group.
+  include_tasks: sec_group.yml
+- name: creating ec2.
+  include_tasks: ec2.yml
+- name: creating elastic ip.
+  include_tasks: eip.yml
+- name: debug.
+  include_tasks: debug.yml

@@ -1,0 +1,4 @@
+---
+- name: Output debug
+  debug:
+    msg: '{{ eip_data.public_ip }}... Please at LEAST 2 min before you SSH. Sometimes it takes a while.'

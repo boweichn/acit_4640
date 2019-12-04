@@ -1,0 +1,43 @@
+---
+- name: add user
+  become: yes
+  user: name="{{ app_user }}" password="{{ app_user }}"
+
+- name: Make APP
+  become: yes
+  file: 
+    path: "{{ app_path }}"
+    state: directory
+    recurse: yes
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: '0777'
+  sudo: yes
+
+- name: downloading git
+  become: yes
+  git:
+    repo: "{{ app_repo }}"
+    dest: "{{ app_path }}"
+  sudo: yes
+
+- name: Change file permissions
+  become: yes
+  file: dest="{{ app_user_home }}" owner="{{ app_user }}" group="{{ app_user }}" mode="0777" recurse=yes
+
+- name: Install packages based on package.json using the npm installed with nvm v0.10.1.
+  become: yes
+  npm:
+    path: "{{ app_path }}"
+
+- name: database.js copy
+  become: yes
+  template:
+    src: "{{ database_file_path }}"
+    dest: "{{ database_app_path }}"
+
+- name: copy the "todoapp.service" file
+  become: yes
+  template:
+    src: "{{ todoservice_file_path }}"
+    dest: "{{ todoservice_app_path }}"

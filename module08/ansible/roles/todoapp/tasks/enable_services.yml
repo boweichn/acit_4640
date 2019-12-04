@@ -1,0 +1,21 @@
+---
+- name: enable todoapp
+  become: yes
+  systemd:
+    name: todoapp
+    enabled: yes
+    state: started
+
+- name: enable and restart nginx
+  become: yes
+  systemd:
+    state: restarted
+    enabled: yes
+    name: nginx
+
+- name: enable mongodb
+  become: yes
+  systemd:
+    name: mongod
+    enabled: yes
+    state: started

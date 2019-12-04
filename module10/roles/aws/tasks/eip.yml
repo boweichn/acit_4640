@@ -1,0 +1,16 @@
+---
+- name: allocate an elastic IP and associtate it with the instance
+  ec2_eip:
+    device_id: '{{ ec2_data.tagged_instances[0].id }}'
+    region: '{{ availRegion }}'
+    release_on_disassociation: true
+  register: eip_data
+
+- name: wait for ssh connection
+  wait_for:
+    host: "{{ eip_data.public_ip }}"
+    port: 22
+    delay: 5
+    connect_timeout: 5
+    timeout: 180
+    state: started

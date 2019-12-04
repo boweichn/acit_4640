@@ -1,0 +1,25 @@
+---
+- name: Get my public IP
+  ipify_facts:
+  register: ip_info
+- name: Output public ip info
+  debug:
+    msg: 'The instance public IP is: {{ ip_info.ansible_facts.ipify_public_ip }}'
+- name: Check if nginx is running
+  become: yes
+  command: systemctl status nginx
+  ignore_errors: yes
+  changed_when: false
+  register: service_nginx_status
+- name: Output nginx status
+  debug:
+    msg: '{{ service_nginx_status }}'
+- name: Check if todoapp is running
+  become: yes
+  command: systemctl status todoapp
+  ignore_errors: yes
+  changed_when: false
+  register: service_todoapp_status
+- name: Output todoapp status
+  debug:
+    msg: '{{ service_todoapp_status }}'

@@ -1,0 +1,10 @@
+- name: Provision the subnet
+  ec2_vpc_subnet:
+    state: present
+    region: '{{ availRegion }}'
+    az: '{{ availZone }}'
+    cidr: '{{ subnetAddBlock }}'
+    vpc_id: '{{ vpc_data.vpc.id }}'
+    tags:
+      Name: '{{ subnetName }}'
+  register: subnet_data

@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  connection: local
+  vars:
+    secgroup_ssh_allowed_instructor_cidr: 142.232.129.99/20
+  tasks:
+    - include_role:
+        name: aws

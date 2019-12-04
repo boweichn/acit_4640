@@ -1,0 +1,14 @@
+module06/packer.exe
+module06/isos/CentOS-7-x86_64-Minimal-1908.iso
+module06/base_4640.box
+module06/.vagrant
+module06/packer_cache
+module06/output
+module07/.vagrant
+module08/ansible_4640.box
+module09/aws_access_keys
+module09/aws_private_key
+module09/credentials.csv
+module10/aws_access_keys
+module10/aws_private_key
+module10/credentials.csv

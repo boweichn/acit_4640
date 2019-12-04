@@ -1,0 +1,4 @@
+---
+- name: Output debug
+  debug:
+    msg: '{{ eip_data.public_ip }}'

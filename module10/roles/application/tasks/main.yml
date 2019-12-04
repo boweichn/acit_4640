@@ -1,0 +1,19 @@
+---
+- name: disabling selinux
+  include_tasks: no_selinux.yml
+- name: installing Epel Release
+  include_tasks: install_epel.yml
+- name: installing Git
+  include_tasks: install_git.yml
+- name: installing MongoDB
+  include_tasks: mongo_server.yml
+- name: installing nginx
+  include_tasks: nginx.yml
+- name: installing Node.JS
+  include_tasks: nodejs.yml
+- name: including all todoapp tasks
+  include_tasks: machine_prep.yml
+- name: including all todoapp tasks
+  include_tasks: enable_services.yml
+- name: refresh Ansible inventory
+  meta: refresh_inventory
